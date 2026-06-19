@@ -1,0 +1,19 @@
+<u>Safe System Debloating 🛠️</u>
+
+<i>Removing unwanted system apps (bloatware) can improve battery life and free up memory. You can do this safely without root or breaking your device warranty.</i>
+
+<b>Modern Method (Recommended)</b>
+The easiest way today is using <b>Shizuku</b> combined with <b>Canta</b> directly on your phone, completely eliminating the need for a computer.
+• Set up Shizuku using Wireless Debugging in Developer Options.
+• Install Canta from F-Droid or GitHub, link it to Shizuku, and safely uninstall background bloatware.
+
+<b>The Traditional PC Method (ADB)</b>
+1. Install ADB on your computer using an official platform tools guide.
+2. Enable <b>USB Debugging</b> inside your phone's Developer Options and plug it into the computer.
+3. Open terminal/command prompt, type <code>adb shell</code>, and authorize the connection prompt on your screen.
+
+<b>⚠️ Critical Warning:</b> Never remove apps critical to system functionality (like core system UIs or security frameworks) or your phone will bootloop.
+
+4. To uninstall a specific app, use the command:
+<code>pm uninstall -k --user 0 PACKAGE_NAME</code>
+<i>Example for Facebook:</i> <code>pm uninstall -k --user 0 com.facebook.katana</code>
