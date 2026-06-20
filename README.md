@@ -3,9 +3,7 @@
 A 24/7 Telegram bot built with Python to manage, support, and entertain the community. 
 
 ## ✨ What It Does Now
-* **General Commands & Memes:** Handles everyday community interactions (Try `/banana` to ask the real questions: "Where update? 🍌").
 * **Community Support:** Manages user queries and routes support features.
-* **Off-Topic Management:** Helps keep chat groups organized and focused.
 * **Admin Controls:** Secure control commands for group administrators.
 * **Always Online:** Hosted 24/7 in the cloud with an active database connection.
 
