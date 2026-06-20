@@ -86,7 +86,9 @@ def error(update: Update, context: CallbackContext):
 
 def start(update: Update, context: CallbackContext):
     """Handle the /start command."""
-    update.message.reply_text("I'm online and ready! Type /help to see what I can do. 🤖")
+    update.message.reply_text(
+        "Hello there! 🤖 Please check the command menu (usually at the bottom left of your screen) to explore all my available features."
+    )
 
 
 if __name__ == "__main__":
