@@ -152,15 +152,27 @@ if __name__ == "__main__":
     dp.add_handler(CommandHandler("clear", clear, Filters.user(config.ADMINS)))
     dp.add_handler(CommandHandler("reset", reset, Filters.user(config.ADMINS)))
 
-    # Crap
+   # Crap
     dp.add_handler(CommandHandler("banana", banana))
     dp.add_handler(CommandHandler("realistic", realistic))
 
+    # ====== SMART GEMINI FILTER ======
     from telegram.ext import MessageHandler, Filters
-    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, chat_with_gemini))
 
-    # Commands have to be added above
-    # dp.add_error_handler(error)  # comment this one out for full stacktrace
+    # Trigger rule 1: It's a private chat
+    private_filter = Filters.chat_type.private
 
+    # Trigger rule 2: It's a group, AND the bot's username is explicitly mentioned/tagged
+    group_mention_filter = (Filters.chat_type.groups | Filters.chat_type.supergroup) & Filters.entity("mention")
+
+    # Combine them: Fire the AI if it's a normal text message in Private OR a Mention in Groups
+    dp.add_handler(
+        MessageHandler(
+            Filters.text & ~Filters.command & (private_filter | group_mention_filter), 
+            chat_with_gemini
+        )
+    )
+
+    # Commands have been set up, start polling
     updater.start_polling()
     updater.idle()
