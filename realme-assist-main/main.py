@@ -156,6 +156,9 @@ if __name__ == "__main__":
     dp.add_handler(CommandHandler("banana", banana))
     dp.add_handler(CommandHandler("realistic", realistic))
 
+    from telegram.ext import MessageHandler, Filters
+    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, chat_with_gemini))
+
     # Commands have to be added above
     # dp.add_error_handler(error)  # comment this one out for full stacktrace
 
