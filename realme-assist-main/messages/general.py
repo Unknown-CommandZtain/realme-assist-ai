@@ -148,7 +148,7 @@ def chat_with_gemini(update: Update, context: CallbackContext):
     for attempt in range(max_retries):
         try:
             response = ai_client.models.generate_content(
-                model='gemini-1.5-flash',
+                model='gemini-2.5-flash',
                 contents=user_text,
                 config=types.GenerateContentConfig(
                     system_instruction=(
