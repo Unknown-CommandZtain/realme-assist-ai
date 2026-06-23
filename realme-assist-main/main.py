@@ -55,7 +55,7 @@ from messages.support import (
 )
 from postgres import PostgresPersistence
 from utils import remove_message
-from messages.ai import chat_with_gemini
+from messages.general import chat_with_gemini
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
