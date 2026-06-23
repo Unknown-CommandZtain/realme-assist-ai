@@ -160,9 +160,21 @@ def chat_with_gemini(update: Update, context: CallbackContext):
                     )
                 )
             )
-            # If successful, send message and break out of the loop
-            update.message.reply_text(response.text, parse_mode=ParseMode.MARKDOWN)
-            break 
+            
+            # ====== THE NEW SMART FALLBACK ======
+            try:
+                # First, try sending it with pretty Markdown formatting
+                update.message.reply_text(response.text, parse_mode=ParseMode.MARKDOWN)
+            except Exception as format_error:
+                # If Telegram crashes because of a stray asterisk or underscore, send it as plain text!
+                if "parse entities" in str(format_error).lower() or "can't parse" in str(format_error).lower():
+                    update.message.reply_text(response.text)
+                else:
+                    # If it's a different error, pass it to the main retry loop
+                    raise format_error 
+            # ====================================
+            
+            break # Success! Break out of the retry loop
             
         except Exception as e:
             error_message = str(e)
