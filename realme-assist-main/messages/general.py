@@ -121,3 +121,39 @@ def benchmark(update: Update, context: CallbackContext):
         delay_group(update, context, veri_text.format(update.message.reply_to_message.from_user.name, text))
     else:
         delay_group(update, context, norm_text.format(update.message.from_user.name, text))
+
+import config
+from google import genai
+from google.genai import types
+
+GEMINI_API_KEY = getattr(config, "GEMINI_API_KEY", None)
+ai_client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
+
+def chat_with_gemini(update: Update, context: CallbackContext):
+    if not update.message or not update.message.text:
+        return
+    if not ai_client:
+        print("AI initialization skipped: GEMINI_API_KEY is missing from config.")
+        return
+
+    bot_username = f"@{context.bot.username}"
+    user_text = update.message.text.replace(bot_username, "").strip()
+
+    try:
+        context.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
+        response = ai_client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=user_text,
+            config=types.GenerateContentConfig(
+                system_instruction=(
+                    "You are Realme Assist, a super-intelligent, witty AI assistant. "
+                    "CRITICAL RULE: You are ONLY allowed to answer questions and discuss topics "
+                    "related to Information Technology (IT), tech, smartphones, software, programming, "
+                    "and Android/Realme UI. If a user asks about anything outside of IT, politely decline "
+                    "and tell them to look it up on a search engine instead. Keep your response brief."
+                )
+            )
+        )
+        update.message.reply_text(response.text, parse_mode=ParseMode.MARKDOWN)
+    except Exception as e:
+        print(f"Error handling Gemini request: {e}")
