@@ -10,18 +10,18 @@ GEMINI_API_KEY = getattr(config, "GEMINI_API_KEY", None)
 ai_client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
 
 def chat_with_gemini(update: Update, context: CallbackContext):
-    """
-    Catch-all handler that routes normal text chatter to Gemini 
-    when no explicit slash command matches.
-    """
-    # Defensive check: ensure there's a message and it contains actual text
     if not update.message or not update.message.text:
         return
 
-    # Fail gracefully if you haven't added the API key to Railway yet
     if not ai_client:
         print("AI initialization skipped: GEMINI_API_KEY is missing from config.")
         return
+
+    # Clean the text: Remove the bot's username so Gemini doesn't get confused by the tag
+    bot_username = f"@{context.bot.username}"
+    user_text = update.message.text.replace(bot_username, "").strip()
+
+    # (The rest of your generate_content logic remains completely the same...)
 
     user_text = update.message.text
 
