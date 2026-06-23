@@ -5,3 +5,4 @@ ujson==4.0.2
 requests
 beautifulsoup4
 google-search-results
+google-genai
