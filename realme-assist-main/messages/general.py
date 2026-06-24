@@ -131,32 +131,58 @@ GEMINI_API_KEY = getattr(config, "GEMINI_API_KEY", None)
 ai_client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
 
 def chat_with_gemini(update: Update, context: CallbackContext):
-    if not update.message or not update.message.text:
-        return
+    # Accept either a text message OR a photo caption
+    raw_text = update.message.text or update.message.caption or "Please explain what is in this image."
+    
     if not ai_client:
         print("AI initialization skipped: GEMINI_API_KEY is missing from config.")
         return
 
+    # Clean the bot's username out of the text
     bot_username = f"@{context.bot.username}"
-    user_text = update.message.text.replace(bot_username, "").strip()
+    user_text = raw_text.replace(bot_username, "").strip()
 
-    # Tell the user the bot is typing
+    # Create a list to hold the things we will send to Gemini
+    # We start by adding the user's text prompt
+    contents_to_send = [user_text]
+
+    # IF the user sent a photo, download it and attach it to the Gemini prompt
+    if update.message.photo:
+        try:
+            # Telegram sends multiple sizes. [-1] is the highest resolution version.
+            highest_res_photo = update.message.photo[-1]
+            photo_file = context.bot.get_file(highest_res_photo.file_id)
+            
+            # Download the photo as raw bytes into memory (no need to save to a hard drive!)
+            image_bytes = bytes(photo_file.download_as_bytearray())
+            
+            # Package the image bytes so Gemini can read them
+            contents_to_send.append(
+                types.Part.from_bytes(data=image_bytes, mime_type='image/jpeg')
+            )
+        except Exception as img_err:
+            print(f"Failed to download image: {img_err}")
+            update.message.reply_text("I had trouble downloading that image. Could you try sending it again?")
+            return
+
+    # Tell the user the bot is thinking
     context.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
 
     # === SMART RETRY LOOP ===
     max_retries = 3
     for attempt in range(max_retries):
         try:
+            # Notice we pass `contents=contents_to_send` instead of just the text now!
             response = ai_client.models.generate_content(
                 model='gemini-3.1-flash-lite',
-                contents=user_text,
+                contents=contents_to_send, 
                 config=types.GenerateContentConfig(
                     system_instruction=(
                         "You are Realme Assist, a super-intelligent, witty AI assistant. "
                         "CRITICAL RULE: You are ONLY allowed to answer questions and discuss topics "
                         "related to Information Technology (IT), tech, smartphones, software, programming, "
-                        "and Android/Realme UI. If a user asks about anything outside of IT, politely decline "
-                        "and tell them to look it up on a search engine instead. Keep your response brief."
+                        "and Android/Realme UI. If a user asks about anything outside of IT, politely decline. "
+                        "If the user provides an image, analyze it closely to help solve their tech problem."
                     )
                 )
             )
