@@ -11,7 +11,6 @@ TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 SERPAPI_KEY = os.environ.get("SERPAPI_KEY", "") 
 
 CONTROL_GROUP = -1001228437777
-OFFTOPIC_GROUP = -1001415779011
 SUPPORT_GROUP = -1001374176745
 
 # This pulls your personal ID from Railway
