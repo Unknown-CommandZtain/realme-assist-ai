@@ -18,7 +18,6 @@ from telegram.ext import (
 )
 
 import config
-from constants import FORBIDDEN_TEXT
 from messages.control import clear, reset
 from messages.general import (
     banana,
@@ -93,9 +92,6 @@ if __name__ == "__main__":
     updater = Updater(config.TOKEN, persistence=PostgresPersistence(session),
                       defaults=Defaults(parse_mode=ParseMode.HTML))
     dp = updater.dispatcher
-
-    for i in FORBIDDEN_TEXT:
-        dp.add_handler(MessageHandler(Filters.regex(r"(?i)" + i), remove_message))
 
     # General
     dp.add_handler(MessageHandler(Filters.regex(r"(?i)(?:(?!/)rmx\d{4})"), resolve_model))
