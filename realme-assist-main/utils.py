@@ -2,7 +2,6 @@ import time
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton, ParseMode, Update
 from telegram.ext import CallbackContext
 from config import ADMINS
-from constants import WARNINGS, DEVICES
 
 def delete_job(context: CallbackContext):
     """Background worker that actually deletes the messages."""
