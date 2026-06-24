@@ -21,14 +21,13 @@ def clear(update: Update, context: CallbackContext):
     update.message.reply_text("Authorization accepted. Clearing data...")
     # (The rest of your clear code goes here)
 
-from config import CONTROL_GROUP, SUPPORT_GROUP, OFFTOPIC_GROUP
+from config import CONTROL_GROUP, SUPPORT_GROUP
 
 
 def clear(update: Update, context: CallbackContext):
     """Clear commands."""
 
     context.bot.delete_my_commands(BotCommandScopeChat(SUPPORT_GROUP))
-    context.bot.delete_my_commands(BotCommandScopeChat(OFFTOPIC_GROUP))
 
     context.bot.set_my_commands(
         [
@@ -82,19 +81,5 @@ def reset(update: Update, context: CallbackContext):
         ("rant", "Why updates don't have dates"),
         ("offtopic", "Move messages to Off-Topic ➡️")
     ] + admin_commands, scope=BotCommandScopeChatAdministrators(SUPPORT_GROUP))
-
-    offtopic_commands = [
-        ("rules", "Show this group's rules 📜"),
-        ("cool", "Cool and useful Apps 😎"),
-        ("gcam", "Latest release and configurations 📷"),
-        ("cleaners", "The recommended cleaning apps ♻️")
-    ]
-
-    context.bot.set_my_commands(offtopic_commands, scope=BotCommandScopeChat(OFFTOPIC_GROUP))
-
-    context.bot.set_my_commands(offtopic_commands + [
-        ("banana", "Where update?"),
-        ("support", "Move messages to the Support-Group ➡️")
-    ] + admin_commands, scope=BotCommandScopeChatAdministrators(OFFTOPIC_GROUP))
 
     update.message.reply_text("Command list was updated.")
