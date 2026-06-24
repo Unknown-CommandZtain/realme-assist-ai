@@ -3,7 +3,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import CallbackContext
 
-from config import ADMINS, OFFTOPIC_GROUP
+from config import ADMINS
 from utils import (
     delay_group,
     message_button_url,
@@ -84,48 +84,6 @@ def whatsapp(update: Update, context: CallbackContext):
         )
         from utils import schedule_delete # Add this to the top of support.py if needed
         schedule_delete(context, reply_message.chat_id, reply_message.message_id)
-        )
-
-def move_to_offtopic(update: Update, context: CallbackContext):
-    if (
-            update.message.reply_to_message is not None
-            and update.message.from_user.id in ADMINS
-    ):
-        update.message.delete()
-        original_msg = update.message.reply_to_message.copy(
-            OFFTOPIC_GROUP,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton(
-                            text="Original Message ➡️",
-                            url=update.message.reply_to_message.link
-                        )
-                    ]
-                ]
-            ),
-        )
-        moved_link = "https://t.me/realme_offtopic/" + str(original_msg.message_id)
-        message_button_url(
-            update,
-            context,
-            "Hey {} 🤖"
-            "\n\nThis is getting pretty off-topic now."
-            "\n\nI moved the message to @realme_offtopic"
-            "\n\nPlease continue the discussion there.".format(
-                update.message.reply_to_message.from_user.name
-            ),
-            "Continue here 😉",
-            moved_link
-        )
-    else:
-        delay_group(
-            update,
-            context,
-            "Hey guys 🤖"
-            "\n\nFeel free to join @realme_offtopic to discuss topics "
-            "not related to Realme or Android."
-            "\n\nYou can also send Links and Stickers there 🥳"
         )
 
 # FIXED: Added explicit UTF-8 decoding to read modern characters perfectly
