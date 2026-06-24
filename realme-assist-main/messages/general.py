@@ -178,7 +178,7 @@ def chat_with_gemini(update: Update, context: CallbackContext):
                 contents=contents_to_send, 
                 config=types.GenerateContentConfig(
                     system_instruction=(
-                        "You are Realme Assist, a super-intelligent, witty AI assistant. "
+                        "You are Realme Assist AI, a super-intelligent, witty AI assistant. "
                         "CRITICAL RULE: You are ONLY allowed to answer questions and discuss topics "
                         "related to Information Technology (IT), tech, smartphones, software, programming, "
                         "and Android/Realme UI. If a user asks about anything outside of IT, politely decline. "
