@@ -9,7 +9,6 @@ Realme Assist AI combines Google Gemini-powered chat, Telegram photo analysis, R
 
 **Status:** v2 / pre-release implementation  
 **Source repository:** [Unknown-CommandZtain/realme-assist-ai](https://github.com/Unknown-CommandZtain/realme-assist-ai)  
-**Current Worker URL in the supplied code:** [`realme-assist-ai.puterahasyimshab.workers.dev`](https://realme-assist-ai.puterahasyimshab.workers.dev)
 
 ## ✨ Features
 
@@ -61,11 +60,6 @@ The supplied v2 implementation is a single JavaScript Worker module, represented
 3. Bind the D1 database to the Worker using the exact variable name **`DB`** (uppercase).
 4. Confirm the deployment has a public HTTPS Worker URL.
 5. In the source code, set `ORIGIN` to that exact deployed origin, **without a trailing slash**, and deploy again if it differs from the URL already in the code.
-
-The supplied code currently contains:
-
-```js
-const ORIGIN = "https://realme-assist-ai.puterahasyimshab.workers.dev";
 ```
 
 If you use a different Worker URL or custom domain, update this constant. The `/setup` route and Telegram webhook registration depend on it.
@@ -90,13 +84,6 @@ The Worker validates the bot token's presence, webhook secret format, owner ID f
 
 > [!CAUTION]
 > Never publish tokens, API keys, or your webhook secret in GitHub, screenshots, or shared setup logs. Rotate exposed credentials and redeploy. The bot does **not** ask users to type an admin key in Telegram: ownership is checked against `ADMIN_ID` on every owner-only command.
-
-### 4. Set the Cron Trigger
-
-Add this Cron Trigger to your Cloudflare Worker:
-
-```cron
-* * * * *
 ```
 
 The once-per-minute schedule runs maintenance for delayed job retries, scheduled message deletion, and periodic cleanup. The Worker may process only a limited number of queued items per invocation; actual deletion and retry times can be later than their requested due times.
@@ -105,7 +92,7 @@ The once-per-minute schedule runs maintenance for delayed job retries, scheduled
 
 Open the setup page at:
 
-**<https://realme-assist-ai.puterahasyimshab.workers.dev/setup>**
+**<https://yourworkspace.workers.dev/setup>**
 
 For a deployment at another origin, use `https://YOUR-WORKER-ORIGIN/setup` instead.
 
@@ -173,34 +160,6 @@ These 27 legacy commands return predefined support text. They do **not** request
 
 **Content notice:** These are legacy templates carried into v2. Some include changing update timelines, device-specific assumptions, external links, or third-party app suggestions. They have **not** been independently re-verified for this release.
 
-## 👑 Owner-only commands
-
-Only the Telegram user whose ID matches `ADMIN_ID` can use these commands. Other users cannot activate owner mode with a chat message or shared password.
-
-| Command | Description |
-| --- | --- |
-| `/admin` | Display the owner control reference |
-| `/settings` | Show the current chat's settings, queue counts, and last maintenance run |
-| `/set ai on\|off` | Enable or disable Gemini AI in the current chat |
-| `/set photos on\|off` | Allow or block photo-based AI queries |
-| `/set lookup on\|off` | Enable or disable RMX lookups |
-| `/set memory on\|off` | Enable or disable AI memory for the current chat |
-| `/set language auto\|en\|ms\|hi\|id\|zh\|ta\|ar` | Override AI language for the current chat |
-| `/set autodelete 0` | Disable automated group message deletion |
-| `/set autodelete 60` | Schedule supported replies for deletion after 60 seconds; supported range is 60–86,400 seconds |
-| `/enablegroup` / `/disablegroup` | Enable or disable bot processing in a group |
-| `/chatid` | Display the current chat ID and sender ID |
-| `/warn` / `/unwarn` | Add or remove a warning for a group user |
-| `/info` | Show a targeted group member's ID, status, and warning count |
-| `/ban` / `/unban` | Ban or unban a group member |
-| `/reset` / `/clear` | Set or remove the current chat's custom Telegram command menu |
-| `/setbanana` | Save a photo as the global `/banana` image by replying to that photo |
-| `/poll Question \| Option 1 \| Option 2` | Post an anonymous Telegram poll with 2–10 options |
-
-For `/warn`, `/unwarn`, `/info`, `/ban`, and `/unban`, reply to a group member's message or pass their numeric Telegram ID. The bot protects the configured owner, itself, and group administrators against supported moderation actions. **Warning totals are informational; there is no automatic warning-based ban.**
-
-**Auto-deletion:** The configured delay applies to newly generated **eligible group replies**, not private-chat replies or every possible command response. Where scheduled, the Worker attempts to delete both the bot's reply and the triggering user message. Deletion requires sufficient Telegram permissions and runs through maintenance; execution is not guaranteed at the exact second configured.
-
 ## 🚦 AI and RMX-search limits
 
 The following limits are defined in the uploaded v2 Worker source. They are **application-level settings**, not published quotas from Google or Cloudflare.
@@ -266,34 +225,6 @@ The current schema version is recorded as `2`. D1 is an entirely separate SQLite
 
 This design reduces the risk of losing accepted work during transient errors, but **does not guarantee delivery** during prolonged outages, quota exhaustion, or configuration failures.
 
-## 🛠️ Troubleshooting
-
-| Symptom | What to check |
-| --- | --- |
-| `/setup` reports `DB` missing | Add the D1 binding with the exact name `DB` |
-| `/setup` reports missing token, secret, or owner | Check Worker secrets and `ADMIN_ID` format; save and redeploy |
-| `/setup` says `Incorrect WEBHOOK_SECRET` | Enter the webhook secret, not the Telegram token |
-| `Webhook matches: false` | Confirm `ORIGIN` matches the public Worker URL and run **Initialize and connect** |
-| `Maintenance last ran: not yet` | Add and verify the `* * * * *` Cron Trigger; then check again after it runs |
-| Private chats work, groups do not | Check `/enablegroup`, initial group IDs, mention/reply behavior, and Telegram group privacy settings |
-| Owner commands are denied | Use the Telegram account with the numeric user ID in `ADMIN_ID`; anonymous-admin messages do not qualify |
-| Gemini replies unavailable | Check `GEMINI_API_KEY`, `GEMINI_MODEL`, provider status, and application quota |
-| RMX lookups unavailable | Check `SERPAPI_KEY`, chat lookup setting, and search quotas |
-| Photos are rejected | Send a smaller Telegram **photo** rather than a document attachment; downloaded images over 500,000 bytes are not accepted |
-| Bans or deletions fail | Verify the bot's Telegram group administrator permissions |
-| Messages arrive late | Inspect `/settings` job counts, webhook status, API limits, and Cron maintenance activity |
-| Old Railway conversations are missing | The Worker does not automatically migrate PostgreSQL data into D1 |
-
-## 🔐 Security and operational notes
-
-- Keep `TELEGRAM_BOT_TOKEN`, `WEBHOOK_SECRET`, `GEMINI_API_KEY`, and `SERPAPI_KEY` out of source control.
-- The webhook rejects requests without the expected Telegram secret-token header.
-- `/setup` uses the webhook secret to authorize database initialization and webhook registration. Protect it accordingly.
-- Bot ownership is determined by a configured numeric Telegram ID, **not** by usernames or an interactive password.
-- Grant the bot only the group permissions it needs and review third-party links in legacy templates.
-- Monitor usage, API errors, and D1 consumption against your actual provider plan limits. Serverless hosting does not imply unlimited usage or a guaranteed free service-level agreement.
-- Back up or export important data before changing schemas. The v2 Worker does not provide an automatic PostgreSQL-to-D1 migration tool.
-
 ## 🧭 Changes from the original bot
 
 | Earlier implementation | Version 2 |
@@ -306,8 +237,6 @@ This design reduces the risk of losing accepted work during transient errors, bu
 | Previous retry approach | D1-backed processing jobs, bounded retries, and Cron recovery |
 | Restricted initial bot testing | Public private chats, with numeric-ID-restricted owner controls |
 
-**Migration note:** The current Worker starts with its own D1 storage. **Existing Railway data has not been imported.** Keep any needed PostgreSQL backup before deleting the old Railway project.
-
 ## 🤝 Contributing and support
 
 Bug reports, corrections to legacy support templates, and suggestions are welcome through the [project repository](https://github.com/Unknown-CommandZtain/realme-assist-ai). The bot also exposes `/about`, `/form`, and `/whatsapp` for existing community information and contact paths.
@@ -315,5 +244,3 @@ Bug reports, corrections to legacy support templates, and suggestions are welcom
 For device update eligibility, software rollout dates, and repair advice, consult official Realme sources as appropriate.
 
 ---
-
-*Realme Assist AI v2: community support, AI-powered troubleshooting, and owner-controlled moderation in one Telegram bot.*
