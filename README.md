@@ -5,7 +5,7 @@
 Realme Assist AI combines Google Gemini-powered chat, Telegram photo analysis, RMX device-code lookups, and a collection of ready-made Realme support commands. Version 2 runs as a **JavaScript Cloudflare Worker**, receives updates through a **Telegram webhook**, and uses **Cloudflare D1 (SQLite)** to store settings, short-term conversations, job status, and moderation records.
 
 > [!IMPORTANT]
-> **Unofficial community project.** Realme Assist AI is not developed, sponsored, or endorsed by Realme. The AI can make mistakes, and legacy support templates may include information that has changed. Verify firmware, product, and safety-critical guidance with official sources.
+> **Unofficial community project.** Realme Assist AI is not developed, sponsored, or endorsed by Realme. AI can make mistakes, and legacy support templates may include information that has changed. Verify firmware, product, and safety-critical guidance with official sources.
 
 **Status:** v2 / pre-release implementation  
 **Source repository:** [Unknown-CommandZtain/realme-assist-ai](https://github.com/Unknown-CommandZtain/realme-assist-ai)  
@@ -92,7 +92,7 @@ The once-per-minute schedule runs maintenance for delayed job retries, scheduled
 
 Open the setup page at:
 
-**<https://yourworkspace.workers.dev/setup>**
+**<https://your.workers.dev/setup>**
 
 For a deployment at another origin, use `https://YOUR-WORKER-ORIGIN/setup` instead.
 
@@ -135,8 +135,8 @@ The bot's AI is instructed to focus on technology and keep responses concise. It
 | `/lookup RMX1234` | Search for a Realme device by RMX code |
 | `/forget` or `/new` | Clear the current conversation's saved AI history |
 | `/memory on` / `/memory off` | Enable or disable your personal AI memory; disabling also clears your saved history |
-| `/language auto` | Match the user's language automatically |
-| `/language en\|ms\|hi\|id\|zh\|ta\|ar` | Set a supported language preference |
+| `/set language auto` | Match the user's language automatically |
+| `/set language en\|ms\|hi\|id\|zh\|ta\|ar` | Set a supported language preference |
 | `/usage` | View your API attempt counts for the current Malaysia-time day |
 | `/privacy` | Read a description of data sent to providers and stored in D1 |
 | `/banana` | Send the saved community banana image, or a fallback message |
