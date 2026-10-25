@@ -1,4 +1,4 @@
-# 🤖 Realme Assist AI v2
+# 🤖 Realme Assist AI v2.0
 
 **A community-powered Telegram assistant for Realme devices, Android, and everyday technology troubleshooting.**
 
@@ -44,19 +44,19 @@ Realme Assist AI combines Google Gemini-powered chat, Telegram photo analysis, R
 
 ## 🚀 Deployment on Cloudflare Workers
 
-The supplied v2 implementation is a single JavaScript Worker module, represented in the uploaded `worker.txt`. Add the script to a Cloudflare Worker (or save it as your project's Worker entry file, such as `src/index.js`). The filename in your repository can differ, but it must be deployed as JavaScript.
+The supplied v2.0 implementation is a single JavaScript Worker module, represented in the uploaded `worker.txt`. Add the script to a Cloudflare Worker (or save it as your project's Worker entry file, such as `src/index.js`). The filename in your repository can differ, but it must be deployed as JavaScript.
 
 ### 1. Prepare your Telegram bot
 
 1. Create or manage a bot with [@BotFather](https://t.me/BotFather).
 2. Obtain its bot token and your **numeric** personal Telegram user ID.
-3. **Stop the previous Railway bot** before switching to the webhook. Do not run the old long-polling implementation against the same Telegram bot at the same time.
+3. **Stop the previous host such as Railway bot** before switching to the webhook. Do not run the old long-polling implementation against the same Telegram bot at the same time.
 4. If credentials were ever exposed, rotate them before deployment.
 
 ### 2. Create the Worker and D1 database
 
 1. In the [Cloudflare dashboard](https://dash.cloudflare.com/), create a Worker and deploy the v2 JavaScript source.
-2. Create a **D1 database** for Realme Assist AI.
+2. Create a **D1 database** for Realme Assist AI as example.
 3. Bind the D1 database to the Worker using the exact variable name **`DB`** (uppercase).
 4. Confirm the deployment has a public HTTPS Worker URL.
 5. In the source code, set `ORIGIN` to that exact deployed origin, **without a trailing slash**, and deploy again if it differs from the URL already in the code.
@@ -102,7 +102,7 @@ For a deployment at another origin, use `https://YOUR-WORKER-ORIGIN/setup` inste
 4. Use **Check status** to review the webhook URL, pending updates, delivery error timestamp, and latest maintenance run.
 5. Test `/start` and `/help` in a private chat. From the account matching `ADMIN_ID`, test `/admin` and `/settings`.
 
-The setup page registers Telegram's `message` update type, not all Telegram update types. Setup is designed to be run again, but it does **not** import existing Railway data.
+The setup page registers Telegram's `message` update type, not all Telegram update types. Setup is designed to be run again, but it does **not** import existing host (e.g Railway) data.
 
 ### 6. Enable a group
 
@@ -158,11 +158,11 @@ These 27 legacy commands return predefined support text. They do **not** request
 | Apps and photography | `/cool`, `/gcam` | Useful applications and Google Camera ports |
 | Updates and community commentary | `/rant`, `/realistic`, `/rumor` | Update expectations, rumors, developer commentary |
 
-**Content notice:** These are legacy templates carried into v2. Some include changing update timelines, device-specific assumptions, external links, or third-party app suggestions. They have **not** been independently re-verified for this release.
+**Content notice:** These are legacy templates carried into v2.0. Some include changing update timelines, device-specific assumptions, external links, or third-party app suggestions. They have **not** been independently re-verified for this release.
 
 ## 🚦 AI and RMX-search limits
 
-The following limits are defined in the uploaded v2 Worker source. They are **application-level settings**, not published quotas from Google or Cloudflare.
+The following limits are defined in the uploaded v2.0 Worker source. They are **application-level settings**, not published quotas from Google or Cloudflare.
 
 | Limit | Gemini AI attempts | RMX search attempts |
 | --- | ---: | ---: |
@@ -212,7 +212,7 @@ The setup routine creates these tables automatically:
 | `ra_cache` | Cached RMX search results |
 | `ra_deletes` | Scheduled Telegram message deletions |
 
-The current schema version is recorded as `2`. D1 is an entirely separate SQLite database from the original Railway PostgreSQL database.
+The current schema version is recorded as `2.0`. D1 is an entirely separate SQLite database from the original Railway PostgreSQL database.
 
 ## 🔁 Processing and maintenance
 
@@ -227,7 +227,7 @@ This design reduces the risk of losing accepted work during transient errors, bu
 
 ## 🧭 Changes from the original bot
 
-| Earlier implementation | Version 2 |
+| Earlier implementation | Version 2.0 |
 | --- | --- |
 | Python / `python-telegram-bot` v13 | JavaScript Cloudflare Worker |
 | Railway service | Cloudflare Workers |
