@@ -14,7 +14,7 @@ Realme Assist AI combines Google Gemini-powered chat, Telegram photo analysis, R
 
 - **🧠 Technology-focused AI:** Uses Google Gemini to answer questions about smartphones, Android, Realme UI, programming, and general IT troubleshooting. An instruction asks the model to decline unrelated requests; this is guidance, not a guaranteed topic filter.
 - **📷 Photo troubleshooting:** Analyzes Telegram photo messages and their captions, subject to the Worker's photo-size and API limits. It does not process arbitrary document attachments as images.
-- **💬 Public private-chat access:** Anyone can message the bot privately for supported public features. Private conversations do **not** require an owner ID or an access key.
+- **💬 Public private-chat access:** Anyone can message the bot privately for supported public features.
 - **🤫 Selective group responses:** In enabled groups, AI typically responds to a direct `@mention` or a reply to the bot. Supported slash commands and RMX codes are handled separately.
 - **🔎 RMX model lookup:** `/lookup RMX1234`, or a recognized `RMX1234` code in a delivered message, searches for a Realme model using SerpApi. Results are cached for 24 hours.
 - **🧵 Short-term AI memory:** Keeps up to six recent AI exchanges per conversation scope for up to 24 hours. Group memories are separated by chat, user, and topic; users can opt out or clear their history.
