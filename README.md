@@ -33,7 +33,7 @@ Realme Assist AI combines Google Gemini-powered chat, Telegram photo analysis, R
 | Runtime / programming language | JavaScript ES module on Cloudflare Workers |
 | Telegram integration | Telegram Bot API over HTTPS using a webhook |
 | AI | Google Gemini REST API (`generateContent`) |
-| Default AI model | `gemini-3.1-flash-lite`, configurable with `GEMINI_MODEL` |
+| Default AI model | `gemini-3.5-flash-lite`, configurable with `GEMINI_MODEL` |
 | Image analysis | Telegram photo download and Gemini inline image input |
 | Model-code search | SerpApi Google Search results |
 | Database | Cloudflare D1 (SQLite) |
