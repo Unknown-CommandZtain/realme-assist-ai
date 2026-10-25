@@ -7,7 +7,7 @@ Realme Assist AI combines Google Gemini-powered chat, Telegram photo analysis, R
 > [!IMPORTANT]
 > **Unofficial community project.** Realme Assist AI is not developed, sponsored, or endorsed by Realme. AI can make mistakes, and legacy support templates may include information that has changed. Verify firmware, product, and safety-critical guidance with official sources.
 
-**Status:** v2 / pre-release implementation  
+**Status:** v2.0 release implementation  
 **Source repository:** [Unknown-CommandZtain/realme-assist-ai](https://github.com/Unknown-CommandZtain/realme-assist-ai)  
 
 ## ✨ Features
