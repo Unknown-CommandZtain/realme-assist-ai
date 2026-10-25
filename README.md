@@ -68,7 +68,7 @@ If you use a different Worker URL or custom domain, update this constant. The `/
 ### 3. Configure secrets and variables
 
 Configure the following in your Worker's settings. Treat credentials as secrets, not source-code constants.
-```
+
 | Name | Type | Required? | Purpose |
 | --- | --- | --- | --- |
 | `TELEGRAM_BOT_TOKEN` | Secret | Yes | Telegram Bot API authentication |
@@ -78,7 +78,7 @@ Configure the following in your Worker's settings. Treat credentials as secrets,
 | `ADMIN_ID` | Text variable | Yes | Numeric Telegram user ID of the sole bot owner |
 | `ALLOWED_GROUP_IDS` | Text variable | No | Comma- or whitespace-separated initial group IDs, usually negative numbers |
 | `GEMINI_MODEL` | Text variable | No | Overrides the default model name |
-```
+
 
 `WEBHOOK_SECRET` must be **32–256 characters**, using only letters, numbers, `_`, or `-`. Use a randomly generated value. `ADMIN_ID` must contain the owner's numeric personal Telegram ID, with no extra quotation marks.
 
