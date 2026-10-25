@@ -62,14 +62,13 @@ The supplied v2.0 implementation is a single JavaScript Worker module, represent
 3. Bind the D1 database to the Worker using the exact variable name **`DB`** (uppercase).
 4. Confirm the deployment has a public HTTPS Worker URL.
 5. In the source code, set `ORIGIN` to that exact deployed origin, **without a trailing slash**, and deploy again if it differs from the URL already in the code.
-```
 
 If you use a different Worker URL or custom domain, update this constant. The `/setup` route and Telegram webhook registration depend on it.
 
 ### 3. Configure secrets and variables
 
 Configure the following in your Worker's settings. Treat credentials as secrets, not source-code constants.
-
+```
 | Name | Type | Required? | Purpose |
 | --- | --- | --- | --- |
 | `TELEGRAM_BOT_TOKEN` | Secret | Yes | Telegram Bot API authentication |
@@ -79,6 +78,7 @@ Configure the following in your Worker's settings. Treat credentials as secrets,
 | `ADMIN_ID` | Text variable | Yes | Numeric Telegram user ID of the sole bot owner |
 | `ALLOWED_GROUP_IDS` | Text variable | No | Comma- or whitespace-separated initial group IDs, usually negative numbers |
 | `GEMINI_MODEL` | Text variable | No | Overrides the default model name |
+```
 
 `WEBHOOK_SECRET` must be **32–256 characters**, using only letters, numbers, `_`, or `-`. Use a randomly generated value. `ADMIN_ID` must contain the owner's numeric personal Telegram ID, with no extra quotation marks.
 
@@ -86,7 +86,6 @@ The Worker validates the bot token's presence, webhook secret format, owner ID f
 
 > [!CAUTION]
 > Never publish tokens, API keys, or your webhook secret in GitHub, screenshots, or shared setup logs. Rotate exposed credentials and redeploy. The bot does **not** ask users to type an admin key in Telegram: ownership is checked against `ADMIN_ID` on every owner-only command.
-```
 
 The once-per-minute schedule runs maintenance for delayed job retries, scheduled message deletion, and periodic cleanup. The Worker may process only a limited number of queued items per invocation; actual deletion and retry times can be later than their requested due times.
 
