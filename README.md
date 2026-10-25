@@ -5,7 +5,7 @@
 Realme Assist AI combines Google Gemini-powered chat, Telegram photo analysis, RMX device-code lookups, and a collection of ready-made Realme support commands. Version 2.0 runs as a **JavaScript Cloudflare Worker**, receives updates through a **Telegram webhook**, and uses **Cloudflare D1 (SQLite)** to store settings, short-term conversations, job status, and moderation records.
 
 > [!IMPORTANT]
-> **Unofficial community project.** Realme Assist AI is not developed, sponsored, or endorsed by Realme. AI can make mistakes, and legacy support templates may include information that has changed. Verify firmware, product, and safety-critical guidance with official sources.
+> **Unofficial community project.** Realme Assist AI v2.0 is not developed, sponsored, or endorsed by Realme. AI can make mistakes, and legacy support templates may include information that has changed. Verify firmware, product, and safety-critical guidance with official sources.
 
 **Status:** v2.0 release implementation  
 **Source repository:** [Unknown-CommandZtain/realme-assist-ai](https://github.com/Unknown-CommandZtain/realme-assist-ai)  
