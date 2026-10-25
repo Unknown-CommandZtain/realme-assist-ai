@@ -2,7 +2,7 @@
 
 **A community-powered Telegram assistant for Realme devices, Android, and everyday technology troubleshooting.**
 
-Realme Assist AI combines Google Gemini-powered chat, Telegram photo analysis, RMX device-code lookups, and a collection of ready-made Realme support commands. Version 2 runs as a **JavaScript Cloudflare Worker**, receives updates through a **Telegram webhook**, and uses **Cloudflare D1 (SQLite)** to store settings, short-term conversations, job status, and moderation records.
+Realme Assist AI combines Google Gemini-powered chat, Telegram photo analysis, RMX device-code lookups, and a collection of ready-made Realme support commands. Version 2.0 runs as a **JavaScript Cloudflare Worker**, receives updates through a **Telegram webhook**, and uses **Cloudflare D1 (SQLite)** to store settings, short-term conversations, job status, and moderation records.
 
 > [!IMPORTANT]
 > **Unofficial community project.** Realme Assist AI is not developed, sponsored, or endorsed by Realme. AI can make mistakes, and legacy support templates may include information that has changed. Verify firmware, product, and safety-critical guidance with official sources.
@@ -44,6 +44,7 @@ Realme Assist AI combines Google Gemini-powered chat, Telegram photo analysis, R
 
 ## 🚀 Deployment on Cloudflare Workers
 
+(BELOW IS THE STEPS IF YOU WANT TO SET UP A BOT SIMILARLY LIKE WHAT I DO)
 The supplied v2.0 implementation is a single JavaScript Worker module, represented in the uploaded `worker.txt`. Add the script to a Cloudflare Worker (or save it as your project's Worker entry file, such as `src/index.js`). The filename in your repository can differ, but it must be deployed as JavaScript.
 
 ### 1. Prepare your Telegram bot
@@ -55,7 +56,7 @@ The supplied v2.0 implementation is a single JavaScript Worker module, represent
 
 ### 2. Create the Worker and D1 database
 
-1. In the [Cloudflare dashboard](https://dash.cloudflare.com/), create a Worker and deploy the v2 JavaScript source.
+1. In the [Cloudflare dashboard](https://dash.cloudflare.com/), create a Worker and deploy the v2.0 JavaScript source.
 2. Create a **D1 database** for Realme Assist AI as example.
 3. Bind the D1 database to the Worker using the exact variable name **`DB`** (uppercase).
 4. Confirm the deployment has a public HTTPS Worker URL.
